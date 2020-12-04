@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.nh.common.constant.Constants;
 import com.nh.common.core.domain.AjaxResult;
 import com.nh.common.core.redis.RedisCache;
+import com.nh.common.utils.sign.Base64;
 import com.nh.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
