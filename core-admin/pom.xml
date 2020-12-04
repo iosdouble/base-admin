@@ -60,6 +60,10 @@
             <artifactId>core-framework</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.nh.baseadmin</groupId>
+            <artifactId>core-system</artifactId>
+        </dependency>
 
     </dependencies>
 
