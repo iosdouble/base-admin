@@ -17,6 +17,7 @@
         <module>core-admin</module>
         <module>core-framework</module>
         <module>core-system</module>
+        <module>core-activiti</module>
     </modules>
 
 
@@ -187,6 +188,7 @@
                 <artifactId>core-common</artifactId>
                 <version>${base.version}</version>
             </dependency>
+
 
         </dependencies>
     </dependencyManagement>

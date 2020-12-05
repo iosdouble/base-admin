@@ -65,6 +65,12 @@
             <artifactId>core-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.nh.baseadmin</groupId>
+            <artifactId>core-activiti</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 
