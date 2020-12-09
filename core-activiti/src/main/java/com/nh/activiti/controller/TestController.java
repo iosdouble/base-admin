@@ -8,6 +8,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -48,76 +49,48 @@ public class TestController {
     private ProcessEngine processEngine;
 
 
-//    IdentityService：提供对流程角色数据进行管理的API，这些角色数据包括用户组、用户及它们之间的关系。
-
-//    FormService：表单服务。
-
     @GetMapping("/start")
     public String start(){
-        Deployment deployment = repositoryService.createDeployment()//创建一个部署对象
+        //创建一个部署对象
+        Deployment deployment = repositoryService.createDeployment()
                 .name("高级测试流程")
-//                .addClasspathResource("processes/myProcess.bpmn")
+                .key("high")
+                .category("test")
                 .addClasspathResource("processes/High.bpmn")
-//                .addClasspathResource("processes/myProcess.png")
+                .tenantId("tenantId")
                 .deploy();
-        System.out.println("部署ID："+deployment.getId());
-        System.out.println("部署名称："+deployment.getName());
         return "OK";
     }
 
     /**启动流程实例分配任务给个人*/
     @GetMapping("/task")
-    public ProcessInstance task() {
-
-        String userKey="PTM";//脑补一下这个是从前台传过来的数据
-//        String processDefinitionKey ="myProcess";//每一个流程有对应的一个key这个是某一个流程内固定的写在bpmn内的
-        String processDefinitionKey ="high";//每一个流程有对应的一个key这个是某一个流程内固定的写在bpmn内的
+    public String task() {
+        //脑补一下这个是从前台传过来的数据
+        String jsonData="测试初始化数据内容";
+        //每一个流程有对应的一个key这个是某一个流程内固定的写在bpmn内的
+        String processDefinitionKey ="high";
         HashMap<String, Object> variables=new HashMap<>();
-        variables.put("userKey", userKey);//userKey在上文的流程变量中指定了
-        variables.put("day", 5);
-        variables.put("users", "a");
-        variables.put("u", "a");
-        variables.put("sers", "a");
-
+        variables.put("initData", jsonData);
         ProcessInstance instance = runtimeService.startProcessInstanceByKey(processDefinitionKey,variables);
-
-        System.out.println("流程实例ID:"+instance.getId());
-        System.out.println("流程定义ID:"+instance.getProcessDefinitionId());
-        return instance;
+        return "提交成功";
     }
 
     /**查询当前人的个人任务*/
     @GetMapping("/findTask")
     public void findTask(){
-        String assignee = "nihui";
+        Map<String,Object> result = new HashMap<>();
+        String assignee = "ghgs";
         List<Task> list = taskService.createTaskQuery()//创建任务查询对象
                 .taskAssignee(assignee)//指定个人任务查询
                 .list();
-
         if(list!=null && list.size()>0){
             for(Task task:list){
-                System.out.println("任务ID:"+task.getId());
-                System.out.println("任务名称:"+task.getName());
-                System.out.println("任务的创建时间:"+task.getCreateTime());
-                System.out.println("任务的办理人:"+task.getAssignee());
-                System.out.println("流程实例ID："+task.getProcessInstanceId());
-                System.out.println("执行对象ID:"+task.getExecutionId());
-                System.out.println("流程定义ID:"+task.getProcessDefinitionId());
-                System.out.println("getOwner:"+task.getOwner());
-                System.out.println("getCategory:"+task.getCategory());
-                System.out.println("getDescription:"+task.getDescription());
-                System.out.println("getFormKey:"+task.getFormKey());
-                Map<String, Object> map = task.getProcessVariables();
-                for (Map.Entry<String, Object> m : map.entrySet()) {
-                    System.out.println("key:" + m.getKey() + " value:" + m.getValue());
-                }
-                for (Map.Entry<String, Object> m : task.getTaskLocalVariables().entrySet()) {
-                    System.out.println("key:" + m.getKey() + " value:" + m.getValue());
-                }
-
+                System.out.println(task.getId());
+                String  initData = (String) runtimeService.getVariable(task.getExecutionId(), "initData");
+                System.out.println(initData);
             }
-
         }
+
     }
 
     /**
@@ -126,13 +99,14 @@ public class TestController {
     @GetMapping("/completeTask")
     public void completeTask(){
         //任务ID
-        String taskId = "27cf2fa1-36a7-11eb-ac46-2cf05d7b6a07";
+        String taskId = "4739c741-39fd-11eb-a494-2cf05d7b6a07";
 
         HashMap<String, Object> variables=new HashMap<>();
         variables.put("days", 5);//userKey在上文的流程变量中指定了
 
         taskService.complete(taskId,variables);
         System.out.println("完成任务：任务ID："+taskId);
+
     }
 
     /**
@@ -176,8 +150,9 @@ public class TestController {
     /**
      * 获取历史办理数据
      */
+    @GetMapping("/getHistory")
     public void findHistoryTask(){
-        String taskAssignee = "张三";
+        String taskAssignee = "ghgs";
         List<HistoricTaskInstance> list = processEngine.getHistoryService()//与历史数据（历史表）相关的Service
                 .createHistoricTaskInstanceQuery()//创建历史任务实例查询
                 .taskAssignee(taskAssignee)//指定历史任务的办理人
@@ -189,4 +164,5 @@ public class TestController {
             }
         }
     }
+
 }

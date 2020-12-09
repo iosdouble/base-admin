@@ -20,6 +20,10 @@ spring:
         max-active: 8
         # 连接池最大阻塞等待时间（使用负数表示没有限制）
         max-wait: -1ms
+  activiti:
+    db-history-used: true
+    history-level: full
+    database-schema-update: true
 nh:
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
@@ -39,3 +43,5 @@ mybatis:
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
+
+

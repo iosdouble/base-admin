@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1607135880756" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1607135880756" name="" targetNamespace="http://www.activiti.org/testm1607135880756" typeLanguage="http://www.w3.org/2001/XMLSchema">
-  <process id="high" isClosed="false" isExecutable="true" name="高级测试流程" processType="None">
+  <process id="high" isClosed="false" isExecutable="true" name="hight" processType="None">
     <startEvent id="_2" name="StartEvent"/>
-    <userTask activiti:exclusive="true" id="user" name="start"/>
+    <userTask activiti:assignee="ghgs" activiti:exclusive="true" id="user" name="start"/>
     <userTask activiti:exclusive="true" id="test2" name="test2"/>
     <sequenceFlow id="_5" sourceRef="_2" targetRef="user"/>
     <exclusiveGateway gatewayDirection="Unspecified" id="select1" name="select1"/>
     <sequenceFlow id="_8" sourceRef="user" targetRef="select1"/>
     <sequenceFlow id="_9" name="day1" sourceRef="select1" targetRef="test2">
-      <conditionExpression xsi:type="tFormalExpression">
-        <![CDATA[${days>1&&days<3}]]>
-      </conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"/>
     </sequenceFlow>
     <userTask activiti:exclusive="true" id="test1" name="test1"/>
     <sequenceFlow id="_11" name="day2" sourceRef="select1" targetRef="test1">
-      <conditionExpression xsi:type="tFormalExpression">
-        <![CDATA[${days>3}]]>
-      </conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"/>
     </sequenceFlow>
     <exclusiveGateway gatewayDirection="Unspecified" id="select2" name="select2"/>
     <sequenceFlow id="_13" sourceRef="test1" targetRef="select2"/>
@@ -86,7 +82,7 @@
           <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="_10" targetElement="_12">
+      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="test1" targetElement="select2">
         <di:waypoint x="445.0" y="305.0"/>
         <di:waypoint x="340.0" y="305.0"/>
         <di:waypoint x="340.0" y="346.0"/>
@@ -94,7 +90,7 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_14" id="BPMNEdge__14" sourceElement="_4" targetElement="_12">
+      <bpmndi:BPMNEdge bpmnElement="_14" id="BPMNEdge__14" sourceElement="test2" targetElement="select2">
         <di:waypoint x="240.0" y="305.0"/>
         <di:waypoint x="340.0" y="305.0"/>
         <di:waypoint x="340.0" y="346.0"/>
@@ -102,21 +98,21 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="_12" targetElement="_15">
+      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="select2" targetElement="end">
         <di:waypoint x="341.0" y="377.0"/>
         <di:waypoint x="341.0" y="460.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_19" id="BPMNEdge__19" sourceElement="_15" targetElement="_17">
+      <bpmndi:BPMNEdge bpmnElement="_19" id="BPMNEdge__19" sourceElement="end" targetElement="select3">
         <di:waypoint x="351.0" y="515.0"/>
         <di:waypoint x="351.0" y="600.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_18" id="BPMNEdge__18" sourceElement="_17" targetElement="_3">
+      <bpmndi:BPMNEdge bpmnElement="_18" id="BPMNEdge__18" sourceElement="select3" targetElement="user">
         <di:waypoint x="335.0" y="616.0"/>
         <di:waypoint x="90.0" y="360.0"/>
         <di:waypoint x="295.0" y="147.5"/>
@@ -124,14 +120,14 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_2" targetElement="_3">
+      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_2" targetElement="user">
         <di:waypoint x="336.0" y="62.0"/>
         <di:waypoint x="336.0" y="120.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="_12" targetElement="_3">
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="select2" targetElement="user">
         <di:waypoint x="357.0" y="361.0"/>
         <di:waypoint x="660.0" y="265.0"/>
         <di:waypoint x="380.0" y="147.5"/>
@@ -139,14 +135,14 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="_3" targetElement="_7">
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="user" targetElement="select1">
         <di:waypoint x="336.0" y="175.0"/>
         <di:waypoint x="336.0" y="225.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_7" targetElement="_4">
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="select1" targetElement="test2">
         <di:waypoint x="321.0" y="240.0"/>
         <di:waypoint x="205.0" y="240.0"/>
         <di:waypoint x="205.0" y="255.0"/>
@@ -154,7 +150,7 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="_7" targetElement="_10">
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="select1" targetElement="test1">
         <di:waypoint x="351.0" y="240.0"/>
         <di:waypoint x="485.0" y="240.0"/>
         <di:waypoint x="485.0" y="260.0"/>
@@ -162,7 +158,7 @@
           <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_21" id="BPMNEdge__21" sourceElement="_17" targetElement="_20">
+      <bpmndi:BPMNEdge bpmnElement="_21" id="BPMNEdge__21" sourceElement="select3" targetElement="_20">
         <di:waypoint x="351.0" y="632.0"/>
         <di:waypoint x="351.0" y="705.0"/>
         <bpmndi:BPMNLabel>
