@@ -1,8 +1,10 @@
 package com.nh.activiti.controller;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -41,6 +43,10 @@ public class LowyerController {
     @Autowired
     private TaskService taskService;
 
+    //与历史数据（历史表）相关的Service
+    @Autowired
+    private HistoryService historyService;
+
     // 项目启动的时候就进行内容的加载
     @PostConstruct
     public void init(){
@@ -57,12 +63,13 @@ public class LowyerController {
 
     /**启动流程实例分配任务给个人*/
     @GetMapping("/task")
-    public String task(@RequestParam(value ="content") String content) {
+    public String task(@RequestParam(value = "user")String username,@RequestParam(value ="content") String content) {
         //每一个流程有对应的一个key这个是某一个流程内固定的写在bpmn内的
         String processDefinitionKey ="Lowyer";
         HashMap<String, Object> variables=new HashMap<>();
+        variables.put("userID",username);
         variables.put("initData", content);
-        ProcessInstance instance = runtimeService.startProcessInstanceByKey(processDefinitionKey,variables);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, variables);
         return "提交成功";
     }
 
@@ -92,11 +99,29 @@ public class LowyerController {
      * 完成任务
      */
     @GetMapping("/completeTask")
-    public void completeTask(@RequestParam(value = "taskId") String taskId){
+    public void completeTask(@RequestParam(value = "taskId") String taskId,@RequestParam(value = "dept") Integer dept){
         HashMap<String, Object> variables=new HashMap<>();
         variables.put("days", 5);//userKey在上文的流程变量中指定了
+        variables.put("dept", dept);//userKey在上文的流程变量中指定了
         taskService.complete(taskId,variables);
         System.out.println("完成任务：任务ID："+taskId);
 
+    }
+
+    /**
+     * 获取历史办理数据
+     */
+    @GetMapping("/getHistory")
+    public void findHistoryTask(@RequestParam(value = "username") String username){
+        String taskAssignee = username;
+        List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery()//创建历史任务实例查询
+                .taskAssignee(taskAssignee)//指定历史任务的办理人
+                .list();
+        if(list!=null && list.size()>0){
+            for(HistoricTaskInstance hti:list){
+                System.out.println(hti.getId()+"    "+hti.getName()+"    "+hti.getProcessInstanceId()+"   "+hti.getStartTime()+"   "+hti.getEndTime()+"   "+hti.getDurationInMillis());
+                System.out.println("################################");
+            }
+        }
     }
 }
