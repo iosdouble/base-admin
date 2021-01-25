@@ -1,9 +1,16 @@
 package com.nh.framework.web.service;
 
+import com.nh.common.constant.Constants;
+import com.nh.common.core.domain.model.LoginUser;
 import com.nh.common.core.redis.RedisCache;
+import com.nh.common.utils.StringUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * com.nh.framework.web.service
@@ -35,4 +42,76 @@ public class TokenService {
     @Autowired
     private RedisCache redisCache;
 
+    /**
+     * 获取用户身份信息
+     *
+     * @return 用户信息
+     */
+    public LoginUser getLoginUser(HttpServletRequest request)
+    {
+        // 获取请求携带的令牌
+        String token = getToken(request);
+        if (StringUtils.isNotEmpty(token))
+        {
+            Claims claims = parseToken(token);
+            // 解析对应的权限以及用户信息
+            String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
+            String userKey = getTokenKey(uuid);
+            LoginUser user = redisCache.getCacheObject(userKey);
+            return user;
+        }
+        return null;
+    }
+
+    /**
+     * 获取请求token
+     *
+     * @param request
+     * @return token
+     */
+    private String getToken(HttpServletRequest request)
+    {
+        String token = request.getHeader(header);
+        if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX))
+        {
+            token = token.replace(Constants.TOKEN_PREFIX, "");
+        }
+        return token;
+    }
+
+    /**
+     * 从令牌中获取数据声明
+     *
+     * @param token 令牌
+     * @return 数据声明
+     */
+    private Claims parseToken(String token)
+    {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /**
+     * 获取的Token Key
+     * @param uuid
+     * @return
+     */
+    private String getTokenKey(String uuid)
+    {
+        return Constants.LOGIN_TOKEN_KEY + uuid;
+    }
+
+    /**
+     * 删除用户身份信息
+     */
+    public void delLoginUser(String token)
+    {
+        if (StringUtils.isNotEmpty(token))
+        {
+            String userKey = getTokenKey(token);
+            redisCache.deleteObject(userKey);
+        }
+    }
 }
