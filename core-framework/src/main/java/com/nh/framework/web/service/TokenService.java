@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 /**
  * com.nh.framework.web.service
@@ -113,5 +114,34 @@ public class TokenService {
             String userKey = getTokenKey(token);
             redisCache.deleteObject(userKey);
         }
+    }
+    /**
+     * 验证令牌有效期，相差不足20分钟，自动刷新缓存
+     *
+     * @param loginUser
+     * @return 令牌
+     */
+    public void verifyToken(LoginUser loginUser)
+    {
+        long expireTime = loginUser.getExpireTime();
+        long currentTime = System.currentTimeMillis();
+        if (expireTime - currentTime <= MILLIS_MINUTE_TEN)
+        {
+            refreshToken(loginUser);
+        }
+    }
+
+    /**
+     * 刷新令牌有效期
+     *
+     * @param loginUser 登录信息
+     */
+    public void refreshToken(LoginUser loginUser)
+    {
+        loginUser.setLoginTime(System.currentTimeMillis());
+        loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);
+        // 根据uuid将loginUser缓存
+        String userKey = getTokenKey(loginUser.getToken());
+        redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
     }
 }

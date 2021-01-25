@@ -1,7 +1,14 @@
 package com.nh.framework.security.handle;
 
+import com.alibaba.fastjson.JSON;
+import com.nh.common.constant.Constants;
+import com.nh.common.constant.HttpStatus;
+import com.nh.common.core.domain.AjaxResult;
 import com.nh.common.core.domain.model.LoginUser;
+import com.nh.common.utils.ServletUtils;
 import com.nh.common.utils.StringUtils;
+import com.nh.framework.manager.AsyncManager;
+import com.nh.framework.manager.factory.AsyncFactory;
 import com.nh.framework.web.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +50,8 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
             // 记录用户退出日志
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT,"退出成功"));
         }
+        ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(HttpStatus.SUCCESS,"退出成功")));
     }
 }

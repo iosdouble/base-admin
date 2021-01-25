@@ -57,23 +57,23 @@ public class AsyncFactory {
                 String browser = userAgent.getBrowser().getName();
                 // 封装对象
                 SysLoginInfo logininfor = new SysLoginInfo();
-                logininfor.setUserName(username);
-                logininfor.setIpaddr(ip);
-                logininfor.setLoginLocation(address);
-                logininfor.setBrowser(browser);
-                logininfor.setOs(os);
-                logininfor.setMsg(message);
+//                logininfor.setUserName(username);
+//                logininfor.setIpaddr(ip);
+//                logininfor.setLoginLocation(address);
+//                logininfor.setBrowser(browser);
+//                logininfor.setOs(os);
+//                logininfor.setMsg(message);
                 // 日志状态
                 if (Constants.LOGIN_SUCCESS.equals(status) || Constants.LOGOUT.equals(status))
                 {
-                    logininfor.setStatus(Constants.SUCCESS);
+//                    logininfor.setStatus(Constants.SUCCESS);
                 }
                 else if (Constants.LOGIN_FAIL.equals(status))
                 {
-                    logininfor.setStatus(Constants.FAIL);
+//                    logininfor.setStatus(Constants.FAIL);
                 }
                 // 插入数据
-                SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
+//                SpringUtils.getBean(ISysLogininforService.class).insertLogininfor(logininfor);
             }
         };
     }
@@ -92,8 +92,8 @@ public class AsyncFactory {
             public void run()
             {
                 // 远程查询操作地点
-                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+//                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+//                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }
         };
     }

@@ -24,6 +24,8 @@ spring:
     db-history-used: true
     history-level: full
     database-schema-update: true
+  main:
+    allow-bean-definition-overriding: true
 nh:
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math

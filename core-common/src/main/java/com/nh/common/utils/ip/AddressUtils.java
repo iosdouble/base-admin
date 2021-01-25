@@ -1,10 +1,10 @@
 package com.nh.common.utils.ip;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ruoyi.common.config.RuoYiConfig;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.http.HttpUtils;
+import com.nh.common.config.BaseConfig;
+import com.nh.common.constant.Constants;
+import com.nh.common.utils.StringUtils;
+import com.nh.common.utils.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (BaseConfig.isAddressEnabled())
         {
             try
             {
