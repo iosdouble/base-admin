@@ -3,14 +3,22 @@ package com.nh.framework.web.service;
 import com.nh.common.constant.Constants;
 import com.nh.common.core.domain.model.LoginUser;
 import com.nh.common.core.redis.RedisCache;
+import com.nh.common.utils.ServletUtils;
 import com.nh.common.utils.StringUtils;
+import com.nh.common.utils.ip.AddressUtils;
+import com.nh.common.utils.ip.IpUtils;
+import com.nh.common.utils.uuid.IdUtils;
+import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -143,5 +151,52 @@ public class TokenService {
         // 根据uuid将loginUser缓存
         String userKey = getTokenKey(loginUser.getToken());
         redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 创建令牌
+     *
+     * @param loginUser 用户信息
+     * @return 令牌
+     */
+    public String createToken(LoginUser loginUser)
+    {
+        String token = IdUtils.fastUUID();
+        loginUser.setToken(token);
+        setUserAgent(loginUser);
+        refreshToken(loginUser);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(Constants.LOGIN_USER_KEY, token);
+        return createToken(claims);
+    }
+
+
+    /**
+     * 设置用户代理信息
+     *
+     * @param loginUser 登录信息
+     */
+    public void setUserAgent(LoginUser loginUser)
+    {
+        UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
+        String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
+        loginUser.setIpaddr(ip);
+        loginUser.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
+        loginUser.setBrowser(userAgent.getBrowser().getName());
+        loginUser.setOs(userAgent.getOperatingSystem().getName());
+    }
+    /**
+     * 从数据声明生成令牌
+     *
+     * @param claims 数据声明
+     * @return 令牌
+     */
+    private String createToken(Map<String, Object> claims)
+    {
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS512, secret).compact();
+        return token;
     }
 }

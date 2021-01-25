@@ -70,9 +70,10 @@ create table sys_unit (
 -- ----------------------------
 drop table if exists sys_user;
 create table sys_user (
-  user_id           bigint(20)      not null auto_increment    comment '用户ID',
-  union_id          bigint(20)      default null               comment '工会ID',
-  unit_id           bigint(20)      default null               comment '单位ID',
+  user_id           bigint(20)      not null                   comment '用户ID',
+  union_id          bigint(20)      default null               comment '工会ID，所属工会',
+  unit_id           bigint(20)      default null               comment '单位ID，所属单位',
+  position_id       bigint(20)      default null               comment '职位ID, 所属职位',
   user_name         varchar(30)     not null                   comment '用户账号',
   nick_name         varchar(30)     not null                   comment '用户昵称',
   user_type         varchar(2)      default '00'               comment '用户类型（00系统用户）',
@@ -90,6 +91,7 @@ create table sys_user (
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
   update_time       datetime                                   comment '更新时间',
+  option_status     varchar(32)     default null               comment '数据操作状态',
   remark            varchar(500)    default null               comment '备注',
   primary key (user_id)
 ) engine=innodb auto_increment=100 comment = '用户信息表';
@@ -105,7 +107,7 @@ create table sys_user (
 drop table if exists sys_post;
 create table sys_post
 (
-  post_id       bigint(20)      not null auto_increment    comment '职位ID',
+  post_id       bigint(20)      not null                   comment '职位ID',
   post_code     varchar(64)     not null                   comment '职位编码',
   post_name     varchar(50)     not null                   comment '职位名称',
   post_sort     int(4)          not null                   comment '显示顺序',

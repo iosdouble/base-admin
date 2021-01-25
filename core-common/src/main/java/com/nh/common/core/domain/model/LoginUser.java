@@ -13,6 +13,7 @@ import java.util.Set;
  * create by admin nihui
  * create time 2020/12/4
  * version 1.0
+ * 登录用户身份权限
  **/
 public class LoginUser implements UserDetails {
 
@@ -61,6 +62,7 @@ public class LoginUser implements UserDetails {
      * 用户信息
      */
     private SysUser user;
+
 
     public String getToken()
     {
