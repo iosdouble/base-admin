@@ -546,3 +546,7 @@ act_procdef_info	流程定义的动态变更信息
 ### zk-common 智酷基础功能支持模块
 
 ### zk-framework 智酷框架支持模块
+
+**com.nh.framework.config**
+
+&emsp;&emsp;基础配置包，其中主要包含了对于Redis、Spring Security、Mybatis等内容的配置。
