@@ -30,6 +30,8 @@ import java.util.Map;
 @RequestMapping("/lowyer")
 public class LowyerController {
 
+
+
     //提供一系列管理流程部署和流程定义的API。
     @Autowired
     private RepositoryService repositoryService;
@@ -50,7 +52,7 @@ public class LowyerController {
     // 项目启动的时候就进行内容的加载
     @PostConstruct
     public void init(){
-        System.out.println("项目创建");
+
         //创建一个部署对象
         Deployment deployment = repositoryService.createDeployment()
                 .name("Lowyer")

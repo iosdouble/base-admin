@@ -52,9 +52,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return createLoginUser(user);
     }
 
+    /**
+     * 添加用户权限
+     * @param user
+     * @return
+     */
     public UserDetails createLoginUser(SysUser user)
     {
-//        return new LoginUser(user, permissionService.getMenuPermission(user));
-        return new LoginUser(user, null);
+        return new LoginUser(user, permissionService.getMenuPermission(user));
     }
 }

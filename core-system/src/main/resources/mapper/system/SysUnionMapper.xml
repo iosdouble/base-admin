@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nh.system.mapper.SysUnionMapper">
+  <resultMap id="BaseResultMap" type="com.nh.common.core.domain.entity.SysUnion">
+    <constructor>
+      <idArg column="union_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="parent_union_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="ancestors" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_chairman" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_contact_person" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_contact_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_email" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="union_level" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_num" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="status" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="del_flag" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="create_by" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_by" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    union_id, parent_union_id, ancestors, union_name, union_type, union_chairman, union_contact_person, 
+    union_contact_phone, union_phone, union_email, union_level, order_num, status, del_flag, 
+    create_by, create_time, update_by, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.nh.common.core.domain.entity.SysUnionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_union
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_union
+    where union_id = #{unionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_union
+    where union_id = #{unionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.nh.common.core.domain.entity.SysUnion">
+    insert into sys_union (union_id, parent_union_id, ancestors, 
+      union_name, union_type, union_chairman, 
+      union_contact_person, union_contact_phone, 
+      union_phone, union_email, union_level, 
+      order_num, status, del_flag, 
+      create_by, create_time, update_by, 
+      update_time)
+    values (#{unionId,jdbcType=BIGINT}, #{parentUnionId,jdbcType=BIGINT}, #{ancestors,jdbcType=VARCHAR}, 
+      #{unionName,jdbcType=VARCHAR}, #{unionType,jdbcType=VARCHAR}, #{unionChairman,jdbcType=VARCHAR}, 
+      #{unionContactPerson,jdbcType=VARCHAR}, #{unionContactPhone,jdbcType=VARCHAR}, 
+      #{unionPhone,jdbcType=VARCHAR}, #{unionEmail,jdbcType=VARCHAR}, #{unionLevel,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nh.common.core.domain.entity.SysUnion">
+    insert into sys_union
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unionId != null">
+        union_id,
+      </if>
+      <if test="parentUnionId != null">
+        parent_union_id,
+      </if>
+      <if test="ancestors != null">
+        ancestors,
+      </if>
+      <if test="unionName != null">
+        union_name,
+      </if>
+      <if test="unionType != null">
+        union_type,
+      </if>
+      <if test="unionChairman != null">
+        union_chairman,
+      </if>
+      <if test="unionContactPerson != null">
+        union_contact_person,
+      </if>
+      <if test="unionContactPhone != null">
+        union_contact_phone,
+      </if>
+      <if test="unionPhone != null">
+        union_phone,
+      </if>
+      <if test="unionEmail != null">
+        union_email,
+      </if>
+      <if test="unionLevel != null">
+        union_level,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="unionId != null">
+        #{unionId,jdbcType=BIGINT},
+      </if>
+      <if test="parentUnionId != null">
+        #{parentUnionId,jdbcType=BIGINT},
+      </if>
+      <if test="ancestors != null">
+        #{ancestors,jdbcType=VARCHAR},
+      </if>
+      <if test="unionName != null">
+        #{unionName,jdbcType=VARCHAR},
+      </if>
+      <if test="unionType != null">
+        #{unionType,jdbcType=VARCHAR},
+      </if>
+      <if test="unionChairman != null">
+        #{unionChairman,jdbcType=VARCHAR},
+      </if>
+      <if test="unionContactPerson != null">
+        #{unionContactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="unionContactPhone != null">
+        #{unionContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unionPhone != null">
+        #{unionPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unionEmail != null">
+        #{unionEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="unionLevel != null">
+        #{unionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nh.common.core.domain.entity.SysUnionExample" resultType="java.lang.Long">
+    select count(*) from sys_union
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_union
+    <set>
+      <if test="record.unionId != null">
+        union_id = #{record.unionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentUnionId != null">
+        parent_union_id = #{record.parentUnionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ancestors != null">
+        ancestors = #{record.ancestors,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionName != null">
+        union_name = #{record.unionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionType != null">
+        union_type = #{record.unionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionChairman != null">
+        union_chairman = #{record.unionChairman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionContactPerson != null">
+        union_contact_person = #{record.unionContactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionContactPhone != null">
+        union_contact_phone = #{record.unionContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionPhone != null">
+        union_phone = #{record.unionPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionEmail != null">
+        union_email = #{record.unionEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionLevel != null">
+        union_level = #{record.unionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_union
+    set union_id = #{record.unionId,jdbcType=BIGINT},
+      parent_union_id = #{record.parentUnionId,jdbcType=BIGINT},
+      ancestors = #{record.ancestors,jdbcType=VARCHAR},
+      union_name = #{record.unionName,jdbcType=VARCHAR},
+      union_type = #{record.unionType,jdbcType=VARCHAR},
+      union_chairman = #{record.unionChairman,jdbcType=VARCHAR},
+      union_contact_person = #{record.unionContactPerson,jdbcType=VARCHAR},
+      union_contact_phone = #{record.unionContactPhone,jdbcType=VARCHAR},
+      union_phone = #{record.unionPhone,jdbcType=VARCHAR},
+      union_email = #{record.unionEmail,jdbcType=VARCHAR},
+      union_level = #{record.unionLevel,jdbcType=VARCHAR},
+      order_num = #{record.orderNum,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=CHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nh.common.core.domain.entity.SysUnion">
+    update sys_union
+    <set>
+      <if test="parentUnionId != null">
+        parent_union_id = #{parentUnionId,jdbcType=BIGINT},
+      </if>
+      <if test="ancestors != null">
+        ancestors = #{ancestors,jdbcType=VARCHAR},
+      </if>
+      <if test="unionName != null">
+        union_name = #{unionName,jdbcType=VARCHAR},
+      </if>
+      <if test="unionType != null">
+        union_type = #{unionType,jdbcType=VARCHAR},
+      </if>
+      <if test="unionChairman != null">
+        union_chairman = #{unionChairman,jdbcType=VARCHAR},
+      </if>
+      <if test="unionContactPerson != null">
+        union_contact_person = #{unionContactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="unionContactPhone != null">
+        union_contact_phone = #{unionContactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unionPhone != null">
+        union_phone = #{unionPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unionEmail != null">
+        union_email = #{unionEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="unionLevel != null">
+        union_level = #{unionLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where union_id = #{unionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nh.common.core.domain.entity.SysUnion">
+    update sys_union
+    set parent_union_id = #{parentUnionId,jdbcType=BIGINT},
+      ancestors = #{ancestors,jdbcType=VARCHAR},
+      union_name = #{unionName,jdbcType=VARCHAR},
+      union_type = #{unionType,jdbcType=VARCHAR},
+      union_chairman = #{unionChairman,jdbcType=VARCHAR},
+      union_contact_person = #{unionContactPerson,jdbcType=VARCHAR},
+      union_contact_phone = #{unionContactPhone,jdbcType=VARCHAR},
+      union_phone = #{unionPhone,jdbcType=VARCHAR},
+      union_email = #{unionEmail,jdbcType=VARCHAR},
+      union_level = #{unionLevel,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where union_id = #{unionId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -2,6 +2,7 @@ package com.nh.common.core.domain.entity;
 
 
 import java.util.Date;
+import java.util.List;
 
 public class SysUser  {
     private Long userId;
@@ -49,6 +50,17 @@ public class SysUser  {
     private String optionStatus;
 
     private String remark;
+
+    private SysUnion union;
+
+    /** 角色对象 */
+    private List<SysRole> roles;
+
+    /** 角色组 */
+    private Long[] roleIds;
+
+    /** 岗位组 */
+    private Long[] postIds;
 
     public SysUser(Long userId, Long unionId, Long unitId, Long positionId, String userName, String nickName, String userType, String email, String phonenumber, String sex, String avatar, String password, String accountType, String status, String delFlag, String loginIp, Date loginDate, String createBy, Date createTime, String updateBy, Date updateTime, String optionStatus, String remark) {
         this.userId = userId;
@@ -262,5 +274,52 @@ public class SysUser  {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+
+    /**
+     * 权限控制
+     * @return
+     */
+    public boolean isAdmin()
+    {
+        return isAdmin(this.userId);
+    }
+
+    public static boolean isAdmin(Long userId)
+    {
+        return userId != null && 1L == userId;
+    }
+
+    public SysUnion getUnion() {
+        return union;
+    }
+
+    public void setUnion(SysUnion union) {
+        this.union = union;
+    }
+
+    public List<SysRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<SysRole> roles) {
+        this.roles = roles;
+    }
+
+    public Long[] getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(Long[] roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public Long[] getPostIds() {
+        return postIds;
+    }
+
+    public void setPostIds(Long[] postIds) {
+        this.postIds = postIds;
     }
 }
