@@ -23,7 +23,7 @@ public class AsyncManager {
     /**
      * 异步操作任务调度线程池
      */
-    private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
+    private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutor");
 
     /**
      * 单例模式

@@ -1,11 +1,17 @@
 package com.nh.web.controller.system;
 
 import com.nh.common.constant.Constants;
+import com.nh.common.core.controller.BaseController;
 import com.nh.common.core.domain.AjaxResult;
+import com.nh.common.core.domain.entity.SysUser;
 import com.nh.common.core.domain.model.LoginBody;
+import com.nh.common.utils.SecurityUtils;
 import com.nh.framework.web.service.SysLoginService;
 import com.nh.framework.web.service.TokenService;
+import com.nh.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
  * version 1.0
  **/
 @RestController
-public class SysLoginController {
+public class SysLoginController extends BaseController {
 
     @Autowired
     private SysLoginService loginService;
+    @Autowired
+    private ISysUserService userService;
 
 
     @Autowired
@@ -42,4 +50,6 @@ public class SysLoginController {
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
+
+
 }

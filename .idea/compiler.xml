@@ -7,10 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core-common" />
-        <module name="core-admin" />
+        <module name="core-framework" />
         <module name="core-activiti" />
         <module name="core-system" />
-        <module name="core-framework" />
+        <module name="core-admin" />
       </profile>
     </annotationProcessing>
   </component>

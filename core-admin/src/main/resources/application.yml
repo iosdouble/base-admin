@@ -1,10 +1,11 @@
+server:
+  servlet:
+    context-path: /
 spring:
+  messages:
+    basename: i18n/messages
   profiles:
     active: dev
-  security:
-    user:
-      name: admin
-      password: 123456
   redis:
     host: localhost
     port: 6379
@@ -46,4 +47,11 @@ mybatis:
   # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
 
-
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
