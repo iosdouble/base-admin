@@ -550,3 +550,63 @@ act_procdef_info	流程定义的动态变更信息
 **com.nh.framework.config**
 
 &emsp;&emsp;基础配置包，其中主要包含了对于Redis、Spring Security、Mybatis等内容的配置。
+
+com.nh.framework.config.DruidConfig
+
+&emsp;&emsp; Druid 动态数据源配置，首先需要在其中注入两个数据源配置，配置的方式是一样的，但是通过@ConfigurationProperties设置了两个不同的数据源配置key。
+
+
+```java
+    
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.master")
+    public DataSource masterDataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource.druid.slave")
+    @ConditionalOnProperty(prefix = "spring.datasource.druid.slave", name = "enabled", havingValue = "true")
+    public DataSource slaveDataSource(DruidProperties druidProperties)
+    {
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        return druidProperties.dataSource(dataSource);
+    }
+
+```
+**动态数据源注入** 这里设置的是主数据源配置，通过new DynamicDataSource(masterDataSource, targetDataSources);主从数据库
+```java
+    @Bean(name = "dynamicDataSource")
+    @Primary
+    public DynamicDataSource dataSource(DataSource masterDataSource)
+    {
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put(DataSourceType.MASTER.name(), masterDataSource);
+        setDataSource(targetDataSources, DataSourceType.SLAVE.name(), "slaveDataSource");
+        return new DynamicDataSource(masterDataSource, targetDataSources);
+    }
+```
+
+```java
+   /**
+     * 设置数据源
+     *
+     * @param targetDataSources 备选数据源集合
+     * @param sourceName 数据源名称
+     * @param beanName bean名称
+     */
+    public void setDataSource(Map<Object, Object> targetDataSources, String sourceName, String beanName)
+    {
+        try
+        {
+            DataSource dataSource = SpringUtils.getBean(beanName);
+            targetDataSources.put(sourceName, dataSource);
+        }
+        catch (Exception e)
+        {
+        }
+    }
+```
+

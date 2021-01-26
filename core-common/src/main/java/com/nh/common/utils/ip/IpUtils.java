@@ -10,8 +10,7 @@ import java.net.UnknownHostException;
 
 /**
  * 获取IP方法
- * 
- * @author ruoyi
+ *
  */
 public class IpUtils
 {
