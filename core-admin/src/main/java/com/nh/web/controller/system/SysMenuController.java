@@ -12,6 +12,7 @@ import com.nh.common.utils.StringUtils;
 import com.nh.framework.web.service.TokenService;
 import com.nh.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,18 @@ public class SysMenuController extends BaseController {
         return AjaxResult.success(menus);
     }
 
+
+    /**
+     * 根据菜单编号获取详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('system:menu:query')")
+    @GetMapping(value = "/{menuId}")
+    public AjaxResult getInfo(@PathVariable Long menuId)
+    {
+        return AjaxResult.success(menuService.selectMenuById(menuId));
+    }
+
+
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
     {
@@ -61,4 +74,26 @@ public class SysMenuController extends BaseController {
         return toAjax(menuService.insertMenu(menu));
     }
 
+    /**
+     * 修改菜单
+     */
+    @PutMapping
+    public AjaxResult edit(@Validated @RequestBody SysMenu menu)
+    {
+        if (UserConstants.NOT_UNIQUE.equals(menuService.checkMenuNameUnique(menu)))
+        {
+            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
+        }
+        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame())
+                && !StringUtils.startsWithAny(menu.getPath(), Constants.HTTP, Constants.HTTPS))
+        {
+            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
+        }
+        else if (menu.getMenuId().equals(menu.getParentId()))
+        {
+            return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己");
+        }
+        menu.setUpdateBy(SecurityUtils.getUsername());
+        return toAjax(menuService.updateMenu(menu));
+    }
 }

@@ -26,4 +26,9 @@ public interface ISysMenuService {
     int insertMenu(SysMenu menu);
 
     String checkMenuNameUnique(SysMenu menu);
+
+    int updateMenu(SysMenu menu);
+
+    SysMenu selectMenuById(Long menuId);
+
 }

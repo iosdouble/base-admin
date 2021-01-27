@@ -181,6 +181,16 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return null;
     }
 
+    @Override
+    public int updateMenu(SysMenu menu) {
+        return 0;
+    }
+
+    @Override
+    public SysMenu selectMenuById(Long menuId) {
+        return menuMapper.selectByPrimaryKey(menuId);
+    }
+
     /**
      * 获取路由名称
      *
