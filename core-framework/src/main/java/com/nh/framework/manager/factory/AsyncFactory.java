@@ -4,8 +4,10 @@ import com.nh.common.constant.Constants;
 import com.nh.common.utils.*;
 import com.nh.common.utils.ip.AddressUtils;
 import com.nh.common.utils.ip.IpUtils;
+import com.nh.common.utils.spring.SpringUtils;
 import com.nh.system.domain.SysLoginInfo;
 import com.nh.system.domain.SysOperLog;
+import com.nh.system.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +92,8 @@ public class AsyncFactory {
             public void run()
             {
                 // 远程查询操作地点
-//                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-//                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }
         };
     }

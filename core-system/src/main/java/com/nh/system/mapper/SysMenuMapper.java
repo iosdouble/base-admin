@@ -32,4 +32,24 @@ public interface SysMenuMapper extends Serializable {
 
     List<SysMenu> selectMenuTreeByUserId(Long userId);
 
+    List<SysMenu> selectMenuListByUserId(SysMenu sysMenu);
+
+    /**
+     * 根据用户ID查询菜单
+     *
+     * @return 菜单列表
+     */
+    public List<SysMenu> selectMenuTreeAll();
+
+    /**
+     * 根据用户ID查询权限
+     *
+     * @param userId 用户ID
+     * @return 权限列表
+     */
+    public List<String> selectMenuPermsByUserId(Long userId);
+
+
+
+
 }

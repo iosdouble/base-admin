@@ -29,4 +29,6 @@ public interface SysRoleMapper extends Serializable {
     int updateByPrimaryKeySelective(SysRole record);
 
     int updateByPrimaryKey(SysRole record);
+
+    List<SysRole> selectRolePermissionByUserId(Long userId);
 }

@@ -18,6 +18,7 @@
         <module>core-framework</module>
         <module>core-system</module>
         <module>core-activiti</module>
+        <module>core-generator</module>
     </modules>
 
 

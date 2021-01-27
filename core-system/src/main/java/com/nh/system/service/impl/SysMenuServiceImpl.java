@@ -3,6 +3,7 @@ package com.nh.system.service.impl;
 import com.nh.common.constant.UserConstants;
 import com.nh.common.core.domain.entity.SysMenu;
 import com.nh.common.core.domain.entity.SysMenuExample;
+import com.nh.common.core.domain.entity.SysUser;
 import com.nh.common.utils.SecurityUtils;
 import com.nh.common.utils.StringUtils;
 import com.nh.system.domain.vo.MetaVo;
@@ -26,16 +27,23 @@ public class SysMenuServiceImpl implements ISysMenuService {
     private SysMenuMapper menuMapper;
     @Override
     public Set<String> selectMenuPermsByUserId(Long userId) {
-        return null;
+        List<String> perms = menuMapper.selectMenuPermsByUserId(userId);
+        Set<String> permsSet = new HashSet<>();
+        for (String perm : perms)
+        {
+            if (StringUtils.isNotEmpty(perm))
+            {
+                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+            }
+        }
+        return permsSet;
     }
 
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
-        SysMenuExample sysMenuExample = new SysMenuExample();
         List<SysMenu> menus = null;
         if (SecurityUtils.isAdmin(userId)){
-
-            menus = menuMapper.selectByExample(sysMenuExample);
+            menus = menuMapper.selectMenuTreeAll();
         }else {
             menus = menuMapper.selectMenuTreeByUserId(userId);
         }
@@ -121,7 +129,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             router.setName(getRouteName(menu));
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
-            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), false));
+            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), 1==menu.getIsCache()));
             List<SysMenu> cMenus = menu.getChildren();
             if (!cMenus.isEmpty() && cMenus.size() > 0 && UserConstants.TYPE_DIR.equals(menu.getMenuType()))
             {
@@ -136,13 +144,39 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 children.setPath(menu.getPath());
                 children.setComponent(menu.getComponent());
                 children.setName(StringUtils.capitalize(menu.getPath()));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), false));
+                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), 1==menu.getIsCache()));
                 childrenList.add(children);
                 router.setChildren(childrenList);
             }
             routers.add(router);
         }
         return routers;
+    }
+
+    @Override
+    public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
+        List<SysMenu> menuList = null;
+        SysMenuExample sysMenuExample = null;
+        // 如果是管理员，则显示所有的菜单信息
+        if (SysUser.isAdmin(userId)){
+            sysMenuExample = new SysMenuExample();
+            menuList = menuMapper.selectByExample(sysMenuExample);
+        }else{
+
+            menu.getParams().put("userId", userId);
+            menuList = menuMapper.selectMenuListByUserId(menu);
+        }
+        return menuList;
+    }
+
+    @Override
+    public int insertMenu(SysMenu menu) {
+        return 0;
+    }
+
+    @Override
+    public String checkMenuNameUnique(SysMenu menu) {
+        return null;
     }
 
     /**
@@ -209,7 +243,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     public boolean isMeunFrame(SysMenu menu)
     {
-        return menu.getParentId().intValue() == 0 && UserConstants.TYPE_MENU.equals(menu.getMenuType())
-                && menu.getIsFrame().equals(UserConstants.NO_FRAME);
+        return menu.getParentId().intValue() == 0 && UserConstants.TYPE_MENU.equals(menu.getMenuType()) && menu.getIsFrame().equals(UserConstants.NO_FRAME);
     }
 }

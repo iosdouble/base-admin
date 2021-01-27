@@ -1,5 +1,6 @@
 package com.nh.common.utils;
 
+import com.nh.common.core.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -16,6 +17,15 @@ import java.io.IOException;
  * 用于客户端请求处理的工具类
  **/
 public class ServletUtils {
+
+    /**
+     * 获取String参数
+     */
+    public static String getParameter(String name)
+    {
+        return getRequest().getParameter(name);
+    }
+
     /**
      * 将字符串渲染到客户端
      *
@@ -56,6 +66,14 @@ public class ServletUtils {
     {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
         return (ServletRequestAttributes) attributes;
+    }
+
+    /**
+     * 获取Integer参数
+     */
+    public static Integer getParameterToInt(String name)
+    {
+        return Convert.toInt(getRequest().getParameter(name));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.nh.web.controller.system;
 
+import com.nh.common.annotation.Log;
 import com.nh.common.constant.Constants;
 import com.nh.common.core.controller.BaseController;
 import com.nh.common.core.domain.AjaxResult;
@@ -42,8 +43,7 @@ public class SysLoginController extends BaseController {
 
     @Autowired
     private SysLoginService loginService;
-    @Autowired
-    private ISysUserService userService;
+
     @Autowired
     private ISysMenuService menuService;
     @Autowired
@@ -59,6 +59,7 @@ public class SysLoginController extends BaseController {
      * @return 结果
      */
     @PostMapping("/login")
+    @Log(title = "用户登录")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
         log.debug("user login {}", JsonUtil.toJson(loginBody));
@@ -106,6 +107,7 @@ public class SysLoginController extends BaseController {
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(user.getUserId());
         return AjaxResult.success(menuService.buildMenus(menus));
     }
+
 
 
 }

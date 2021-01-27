@@ -1,10 +1,12 @@
 package com.nh.common.core.domain.entity;
 
+import com.nh.common.core.domain.BaseEntity;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SysMenu {
+public class SysMenu extends BaseEntity {
     private Long menuId;
 
     private String menuName;
@@ -34,10 +36,6 @@ public class SysMenu {
     private String createBy;
 
     private Date createTime;
-
-    private String updateBy;
-
-    private Date updateTime;
 
     private String remark;
     /** 子菜单 */
@@ -69,8 +67,6 @@ public class SysMenu {
         this.icon = icon;
         this.createBy = createBy;
         this.createTime = createTime;
-        this.updateBy = updateBy;
-        this.updateTime = updateTime;
         this.remark = remark;
     }
 
@@ -198,21 +194,6 @@ public class SysMenu {
         this.createTime = createTime;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy == null ? null : updateBy.trim();
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getRemark() {
         return remark;

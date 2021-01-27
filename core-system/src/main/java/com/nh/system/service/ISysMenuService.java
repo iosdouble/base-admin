@@ -20,4 +20,10 @@ public interface ISysMenuService {
     List<SysMenu> selectMenuTreeByUserId(Long userId);
 
     List<RouterVo> buildMenus(List<SysMenu> menus);
+
+    List<SysMenu> selectMenuList(SysMenu menu, Long userId);
+
+    int insertMenu(SysMenu menu);
+
+    String checkMenuNameUnique(SysMenu menu);
 }
