@@ -610,3 +610,14 @@ com.nh.framework.config.DruidConfig
     }
 ```
 
+
+## BUG
+
+1、修改数据库结构导致数据库路径操作出现问题，需要在路由之前加入 /  才能正常使用，有待优化
+
+
+## 定制化开发
+
+### 对于启动Logo 修改
+1、Logo.vue 项目中将内容title进行修改
+

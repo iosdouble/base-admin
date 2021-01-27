@@ -23,8 +23,10 @@ import java.util.*;
  **/
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
+
     @Autowired
     private SysMenuMapper menuMapper;
+
     @Override
     public Set<String> selectMenuPermsByUserId(Long userId) {
         List<String> perms = menuMapper.selectMenuPermsByUserId(userId);
